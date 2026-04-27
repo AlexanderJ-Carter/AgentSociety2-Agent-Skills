@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# MkDocs output is built by GitHub Actions Pages.
+site/
+
+# Local environment files.
+.env
+.env.*
+.venv/
+venv/

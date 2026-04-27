@@ -1,0 +1,25 @@
+site_name: AgentSociety2 Skills
+site_description: Skills repository for simulating social humans (external skill source).
+repo_name: agentsociety2-skill-repo
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.sections
+    - content.code.copy
+
+nav:
+  - 主页 / Home: index.md
+  - 技能 / Skills:
+      - 技能目录 / Skill Catalog: skills/catalog.md
+      - 技能规范 / Skill Standard: skill_standard.md
+      - 技能说明 / Skill Guide: 技能说明.md
+      - 理论依据 / Research Basis: theory_basis.md
+  - 集成 / Integration:
+      - workspace / AGENT.md: agent_context_design.md
+  - 研究 / Research:
+      - human_agent_research: human_agent_research.md
+      - agent_framework_design_research: agent_framework_design_research.md
