@@ -6,10 +6,19 @@ site_dir: site
 
 theme:
   name: material
+  logo: assets/logo.svg
+  favicon: assets/favicon.svg
   features:
     - navigation.instant
     - navigation.sections
     - content.code.copy
+  palette:
+    - scheme: default
+      primary: teal
+      accent: blue
+
+extra_css:
+  - stylesheets/extra.css
 
 nav:
   - 主页 / Home: index.md

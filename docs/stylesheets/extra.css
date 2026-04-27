@@ -1,0 +1,97 @@
+:root {
+  --as2-ink: #111827;
+  --as2-muted: #526070;
+  --as2-line: #d8dee8;
+  --as2-teal: #0f766e;
+  --as2-blue: #2563eb;
+  --as2-paper: #f8fafc;
+}
+
+.md-header {
+  box-shadow: none;
+}
+
+.md-typeset h1,
+.md-typeset h2 {
+  letter-spacing: 0;
+}
+
+.md-typeset h1 {
+  font-weight: 760;
+}
+
+.as2-hero {
+  display: grid;
+  gap: 1.1rem;
+  padding: 2.2rem;
+  margin: 0 0 1.5rem;
+  border: 1px solid var(--as2-line);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(37, 99, 235, 0.07)),
+    var(--as2-paper);
+}
+
+.as2-hero h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  line-height: 1.12;
+}
+
+.as2-hero p {
+  max-width: 48rem;
+  margin: 0;
+  color: var(--as2-muted);
+  font-size: 1.02rem;
+}
+
+.as2-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.8rem;
+  margin: 1rem 0 1.6rem;
+}
+
+.as2-card {
+  min-height: 8rem;
+  padding: 1rem;
+  border: 1px solid var(--as2-line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.as2-card strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--as2-ink);
+}
+
+.as2-card p {
+  margin: 0;
+  color: var(--as2-muted);
+}
+
+.as2-kicker {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  color: var(--as2-teal);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.as2-flow {
+  padding: 0.85rem 1rem;
+  border-left: 4px solid var(--as2-teal);
+  background: #f1f5f9;
+  color: var(--as2-ink);
+}
+
+.md-typeset table:not([class]) {
+  font-size: 0.72rem;
+}
+
+.md-typeset code {
+  border-radius: 4px;
+}
