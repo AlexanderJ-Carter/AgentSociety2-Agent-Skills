@@ -10,6 +10,7 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/affordance/`
 - 说明文件 / Skill file: `skills/affordance/SKILL.md`
+- 最近更新 / Last updated: `2026-04-27`
 - 理论依据 / Research basis: no bundled reference file.
 
 ## SKILL.md（原文）

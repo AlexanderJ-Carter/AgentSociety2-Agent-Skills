@@ -16,47 +16,47 @@ Start with the core loop, then add domain skills only when the simulation needs 
 
 Observation, cognition, planning, and memory. These skills are usually present in every agent tick.
 
-| Skill | What it does | Research basis |
-|---|---|---|
-| [`observation`](./observation.md) | Fetch the current world observation for this tick. | not bundled / 未内置 |
-| [`cognition`](./cognition.md) | Produce emotion.json and intention.json from workspace context. | yes / 有 |
-| [`plan`](./plan.md) | Execute intentions through the environment. | not bundled / 未内置 |
-| [`memory`](./memory.md) | Persist important outcomes from this step to long-term storage with automatic forgetting curve. | yes / 有 |
+| Skill | What it does | Last updated | Research basis |
+|---|---|---|---|
+| [`observation`](./observation.md) | Fetch the current world observation for this tick. | 2026-04-27 | not bundled / 未内置 |
+| [`cognition`](./cognition.md) | Produce emotion.json and intention.json from workspace context. | 2026-04-30 | yes / 有 |
+| [`plan`](./plan.md) | Execute intentions through the environment. | 2026-04-27 | not bundled / 未内置 |
+| [`memory`](./memory.md) | Persist important outcomes from this step to long-term storage with automatic forgetting curve. | 2026-04-30 | yes / 有 |
 
 ## 身体、健康与日常节律 / Body, Health, Routine
 
 Internal bodily pressures and daily timing that make behavior less random and more human-like.
 
-| Skill | What it does | Research basis |
-|---|---|---|
-| [`circadian`](./circadian.md) | Maintain sleep-wake rhythm, circadian alertness, appetite rhythm, and chronotype-sensitive daily timing. | yes / 有 |
-| [`physiology`](./physiology.md) | Update body-level needs such as hunger, satiety, thirst, fatigue, and stress from time, activity, and recent events. | yes / 有 |
-| [`health`](./health.md) | Track sickness, pain, chronic condition, recovery, exercise, stress load, and long-term wellbeing. | not bundled / 未内置 |
-| [`routine`](./routine.md) | Maintain daily routines, habits, schedules, and repeated life patterns for a social human agent. | not bundled / 未内置 |
-| [`learning`](./learning.md) | Track skill learning, knowledge retention, self-efficacy, and practice-driven proficiency for human-like agents. | yes / 有 |
+| Skill | What it does | Last updated | Research basis |
+|---|---|---|---|
+| [`circadian`](./circadian.md) | Maintain sleep-wake rhythm, circadian alertness, appetite rhythm, and chronotype-sensitive daily timing. | 2026-04-27 | yes / 有 |
+| [`physiology`](./physiology.md) | Update body-level needs such as hunger, satiety, thirst, fatigue, and stress from time, activity, and recent events. | 2026-04-27 | yes / 有 |
+| [`health`](./health.md) | Track sickness, pain, chronic condition, recovery, exercise, stress load, and long-term wellbeing. | 2026-04-27 | not bundled / 未内置 |
+| [`routine`](./routine.md) | Maintain daily routines, habits, schedules, and repeated life patterns for a social human agent. | 2026-04-27 | not bundled / 未内置 |
+| [`learning`](./learning.md) | Track skill learning, knowledge retention, self-efficacy, and practice-driven proficiency for human-like agents. | 2026-04-30 | yes / 有 |
 
 ## 社会关系、规范与身份 / Social Life
 
 Relationships, roles, culture, communication, identity, and moral judgment.
 
-| Skill | What it does | Research basis |
-|---|---|---|
-| [`relationships`](./relationships.md) | Update interpersonal familiarity, trust, liking, obligation, conflict, and shared history. | yes / 有 |
-| [`norms`](./norms.md) | Track social norms, roles, obligations, permissions, sanctions, and place-specific expectations. | not bundled / 未内置 |
-| [`culture`](./culture.md) | Apply cultural values, etiquette, rituals, symbols, taboos, and local meaning to perception and decisions. | not bundled / 未内置 |
-| [`communication`](./communication.md) | Model conversation intent, speech style, turn-taking, listening, repair, and nonverbal cues. Use before or after social interaction, dialogue, negotiation, apology, request, gossip, or conflict. | yes / 有 |
-| [`identity`](./identity.md) | Maintain self-concept, social identity, roles, values, status concerns, and identity threats. Use when behavior depends on who the agent thinks it is or how it is seen. | yes / 有 |
-| [`moral_judgment`](./moral_judgment.md) | Appraise events through moral foundations, social intuition, deliberation, guilt, shame, anger, and repair tendencies. | yes / 有 |
+| Skill | What it does | Last updated | Research basis |
+|---|---|---|---|
+| [`relationships`](./relationships.md) | Update interpersonal familiarity, trust, liking, obligation, conflict, and shared history. | 2026-04-30 | yes / 有 |
+| [`norms`](./norms.md) | Track social norms, roles, obligations, permissions, sanctions, and place-specific expectations. | 2026-04-27 | not bundled / 未内置 |
+| [`culture`](./culture.md) | Apply cultural values, etiquette, rituals, symbols, taboos, and local meaning to perception and decisions. | 2026-04-27 | not bundled / 未内置 |
+| [`communication`](./communication.md) | Model conversation intent, speech style, turn-taking, listening, repair, and nonverbal cues. Use before or after social interaction, dialogue, negotiation, apology, request, gossip, or conflict. | 2026-04-27 | yes / 有 |
+| [`identity`](./identity.md) | Maintain self-concept, social identity, roles, values, status concerns, and identity threats. Use when behavior depends on who the agent thinks it is or how it is seen. | 2026-04-27 | yes / 有 |
+| [`moral_judgment`](./moral_judgment.md) | Appraise events through moral foundations, social intuition, deliberation, guilt, shame, anger, and repair tendencies. | 2026-04-27 | yes / 有 |
 
 ## 资源、制度与信息环境 / Constraints and Institutions
 
 Money, affordances, public institutions, media exposure, and reflection over long-term patterns.
 
-| Skill | What it does | Research basis |
-|---|---|---|
-| [`economy`](./economy.md) | Track money, work obligations, consumption choices, scarcity, and material constraints. | yes / 有 |
-| [`affordance`](./affordance.md) | Assess what actions are realistically available under environment, time, distance, access, money, body, and social constraints. | not bundled / 未内置 |
-| [`civic_institution`](./civic_institution.md) | Track institutional encounters, procedural justice, legitimacy, compliance, service access, and civic trust. | yes / 有 |
-| [`media_literacy`](./media_literacy.md) | Track information exposure, source credibility, motivated reasoning, misinformation risk, and belief-update resistance. | yes / 有 |
-| [`reflection`](./reflection.md) | Synthesize memories into stable beliefs, preferences, self-concept, and future behavioral tendencies. | not bundled / 未内置 |
+| Skill | What it does | Last updated | Research basis |
+|---|---|---|---|
+| [`economy`](./economy.md) | Track money, work obligations, consumption choices, scarcity, and material constraints. | 2026-04-30 | yes / 有 |
+| [`affordance`](./affordance.md) | Assess what actions are realistically available under environment, time, distance, access, money, body, and social constraints. | 2026-04-27 | not bundled / 未内置 |
+| [`civic_institution`](./civic_institution.md) | Track institutional encounters, procedural justice, legitimacy, compliance, service access, and civic trust. | 2026-04-27 | yes / 有 |
+| [`media_literacy`](./media_literacy.md) | Track information exposure, source credibility, motivated reasoning, misinformation risk, and belief-update resistance. | 2026-04-27 | yes / 有 |
+| [`reflection`](./reflection.md) | Synthesize memories into stable beliefs, preferences, self-concept, and future behavioral tendencies. | 2026-04-27 | not bundled / 未内置 |
 

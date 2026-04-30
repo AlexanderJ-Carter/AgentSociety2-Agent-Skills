@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import subprocess
 from dataclasses import dataclass
+from datetime import date, datetime
 from pathlib import Path
 
 
@@ -35,6 +37,42 @@ class SkillMeta:
     skill_dir: Path
     skill_md_text: str
     reference_files: tuple[Path, ...]
+    last_updated: str
+
+
+def _run_git(repo_root: Path, args: list[str]) -> str | None:
+    try:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=repo_root,
+            check=False,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+    except OSError:
+        return None
+    if result.returncode != 0:
+        return None
+    output = result.stdout.strip()
+    return output or None
+
+
+def _skill_last_updated(repo_root: Path, skill_dir: Path) -> str:
+    relative = skill_dir.relative_to(repo_root).as_posix()
+    dirty = _run_git(repo_root, ["status", "--porcelain", "--", relative])
+    if dirty:
+        mtimes = [
+            p.stat().st_mtime
+            for p in skill_dir.rglob("*")
+            if p.is_file()
+        ]
+        if mtimes:
+            return datetime.fromtimestamp(max(mtimes)).date().isoformat()
+        return date.today().isoformat()
+
+    committed = _run_git(repo_root, ["log", "-1", "--format=%cs", "--", relative])
+    return committed or "unknown"
 
 
 def _parse_frontmatter(text: str) -> dict[str, str]:
@@ -61,7 +99,7 @@ def _parse_frontmatter(text: str) -> dict[str, str]:
     return meta
 
 
-def _load_skill_meta(skill_dir: Path) -> SkillMeta:
+def _load_skill_meta(repo_root: Path, skill_dir: Path) -> SkillMeta:
     skill_md = skill_dir / "SKILL.md"
     text = skill_md.read_text(encoding="utf-8")
     fm = _parse_frontmatter(text)
@@ -79,6 +117,7 @@ def _load_skill_meta(skill_dir: Path) -> SkillMeta:
         skill_dir=skill_dir,
         skill_md_text=text,
         reference_files=reference_files,
+        last_updated=_skill_last_updated(repo_root, skill_dir),
     )
 
 
@@ -106,14 +145,14 @@ def build_catalog_md(skills: list[SkillMeta]) -> str:
         lines.append("")
         lines.append(description)
         lines.append("")
-        lines.append("| Skill | What it does | Research basis |")
-        lines.append("|---|---|---|")
+        lines.append("| Skill | What it does | Last updated | Research basis |")
+        lines.append("|---|---|---|---|")
         for name in names:
             skill = by_name.get(name)
             if not skill:
                 continue
             refs = "yes / 有" if skill.reference_files else "not bundled / 未内置"
-            lines.append(f"| [`{skill.name}`](./{skill.name}.md) | {skill.description} | {refs} |")
+            lines.append(f"| [`{skill.name}`](./{skill.name}.md) | {skill.description} | {skill.last_updated} | {refs} |")
         lines.append("")
 
     remaining = [s for s in skills if s.name not in grouped_names]
@@ -122,7 +161,7 @@ def build_catalog_md(skills: list[SkillMeta]) -> str:
         lines.append("")
         for s in remaining:
             refs = "；含理论依据 / includes research basis" if s.reference_files else ""
-            lines.append(f"- **[`{s.name}`](./{s.name}.md)**: {s.description} {refs}".rstrip())
+            lines.append(f"- **[`{s.name}`](./{s.name}.md)** ({s.last_updated}): {s.description} {refs}".rstrip())
         lines.append("")
     lines.append("")
     return "\n".join(lines)
@@ -142,6 +181,7 @@ def build_skill_page_md(skill: SkillMeta) -> str:
     lines.append("")
     lines.append(f"- 技能目录 / Skill folder: `skills/{skill.name}/`")
     lines.append(f"- 说明文件 / Skill file: `skills/{skill.name}/SKILL.md`")
+    lines.append(f"- 最近更新 / Last updated: `{skill.last_updated}`")
     if skill.reference_files:
         lines.append("- 理论依据 / Research basis:")
         for ref in skill.reference_files:
@@ -173,7 +213,7 @@ def main() -> None:
     docs_skills_dir = repo_root / "docs" / "skills"
 
     skill_dirs = sorted([p for p in skills_root.iterdir() if p.is_dir()])
-    skills = [_load_skill_meta(p) for p in skill_dirs if (p / "SKILL.md").exists()]
+    skills = [_load_skill_meta(repo_root, p) for p in skill_dirs if (p / "SKILL.md").exists()]
     skills_sorted = sorted(skills, key=lambda s: s.name)
 
     docs_skills_dir.mkdir(parents=True, exist_ok=True)

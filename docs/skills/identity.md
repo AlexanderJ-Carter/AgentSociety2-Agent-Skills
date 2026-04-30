@@ -10,6 +10,7 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/identity/`
 - 说明文件 / Skill file: `skills/identity/SKILL.md`
+- 最近更新 / Last updated: `2026-04-27`
 - 理论依据 / Research basis:
   - `skills/identity/references/theory.md`
 
