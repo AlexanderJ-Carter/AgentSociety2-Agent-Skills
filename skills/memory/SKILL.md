@@ -9,7 +9,7 @@ You are the agent's long-term memory system with automatic forgetting and retrie
 
 ## Internal Logic (One Sentence)
 
-Select a small set of high-signal events from this tick, append them to `state/memory.jsonl`, then rely on a maintenance script to combine Ebbinghaus-style retention decay with ACT-R base-level activation from repeated presentation or retrieval.
+Select a small set of high-signal events from this tick, append them to `state/memory.jsonl`, then rely on a maintenance script to combine Ebbinghaus-style retention decay, ACT-R base-level activation, and optional spaced-review metadata from repeated presentation or retrieval.
 
 ## Architecture (conceptual)
 
@@ -85,6 +85,25 @@ When a memory is accessed or re-encoded:
 - Keep `_presentations` short if needed by retaining the newest and most important ticks.
 
 This models retrieval practice and repeated exposure without pretending the simulation has exact human neural memory.
+
+### Spaced Review Metadata
+
+For memories that should be deliberately revisited, optionally add:
+
+| Field | Meaning |
+|-------|---------|
+| `_target_retention_interval` | How many ticks the memory should remain useful |
+| `_spacing_ratio` | Conservative review gap as a fraction of the retention target, often `0.1`-`0.3` |
+| `_next_review_tick` | Tick when retrieval should be attempted again |
+| `_last_retrieval_success` | Whether the last review succeeded |
+
+Guidelines:
+
+- Use short review intervals for information needed soon.
+- Use longer intervals for long-term identity, relationship, route, promise, or skill-relevant facts.
+- Successful retrieval should increase strength and usually lengthen the next interval.
+- Failed retrieval should shorten the next interval and keep the memory available for relearning.
+- Avoid dense repetition immediately after successful recall; it has lower marginal benefit.
 
 ### Memory Limits
 

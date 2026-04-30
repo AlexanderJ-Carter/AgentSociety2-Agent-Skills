@@ -49,6 +49,9 @@ Read any existing files from the workspace as context. Common inputs include:
 | `state/memory.jsonl` | Last 5–10 lines for continuity |
 | `state/emotion.json`, `state/intention.json` | Prior state for continuity |
 | `state/plan_state.json` | Whether a multi-step plan is in flight |
+| `state/economy.json` | Scarcity and satisficing pressure |
+| `state/learning.json` | Self-efficacy and SDT motivation signals |
+| `state/relationships.json` | Social trust, familiarity, and consensus influence |
 
 Also use **Agent Identity** from the system prompt. Other JSON in the workspace (`state/beliefs.json`, etc.) can be read if present. **Skip missing files gracefully.**
 
@@ -213,11 +216,16 @@ Emotions also create natural behavioral tendencies that should bias candidate se
 1. List up to 5 candidate goals (fewer is fine).
 2. If the workspace contains urgency signals (e.g., unmet needs), prefer candidates that address them; otherwise leisure or exploration is appropriate.
 3. Score each candidate with the three TPB fields (base values).
-4. **Apply emotion modifiers** to attitude and perceived_control based on current emotion state.
-5. **Consider emotion-behavior tendencies** when ranking candidates.
-6. Assign `priority` to each candidate based on final_score.
-7. Emit only the best candidate as `state/intention.json` (highest final_score, or lowest `priority`).
-8. Phrase `intention` as a goal ("Eat lunch at the café"), not step-by-step motor instructions.
+4. Apply bounded-rationality search: when time, attention, or uncertainty is high, stop at a feasible candidate that clears an aspiration threshold instead of over-optimizing.
+5. **Apply emotion modifiers** to attitude and perceived_control based on current emotion state.
+6. **Consider emotion-behavior tendencies** when ranking candidates.
+7. Apply uncertainty heuristics only as transparent biases, not as hidden facts:
+   - representativeness: familiar-looking situations raise perceived likelihood of similar outcomes
+   - availability: vivid/recent memories raise salience
+   - anchoring: previous estimates or first offers pull numeric judgments unless there is strong contrary evidence
+8. Assign `priority` to each candidate based on final_score.
+9. Emit only the best or first-satisfactory candidate as `state/intention.json`.
+10. Phrase `intention` as a goal ("Eat lunch at the café"), not step-by-step motor instructions.
 
 ### Example Calculation
 
@@ -291,6 +299,11 @@ Final scores:
   "subjective_norm": 0.7,
   "perceived_control": 0.8,
   "final_score": 2.4,
+  "decision_process": {
+    "search_policy": "satisficing",
+    "aspiration_level": 1.8,
+    "heuristics": ["availability: recent hunger memory increased meal salience"]
+  },
   "emotion_influence": {
     "joy_modifier": 0.05,
     "applied_modifiers": ["joy > 7: +0.10 attitude"]
@@ -363,6 +376,8 @@ Intentions in social settings are rarely pure utility maximization. They are inf
 ## Evidence anchors
 
 - Theory of Planned Behavior (Ajzen): intention is shaped by attitude, subjective norm, and perceived behavioral control.
+- Bounded rationality (Simon): choice under limited information and computation often uses satisficing rather than global optimization.
+- Heuristics and biases (Tversky & Kahneman): representativeness, availability, and anchoring are efficient shortcuts that can systematically bias judgment under uncertainty.
 - Meta-analytic support: TPB predicts many social/health behaviors with moderate effect sizes.
 - Emotion-cognition interaction literature: affect shifts risk perception, confidence, and action tendency.
 - Scherer Component Process Model (CPM): emotion differentiation can be modeled as repeated appraisal checks over relevance, implications, coping potential, and normative significance.
@@ -416,6 +431,24 @@ For each candidate intention:
 
 Then output only top candidate with brief reasoning.
 
+### Bounded search and heuristics
+
+Use a two-stage decision policy when context is uncertain:
+
+1. Generate a small candidate set from needs, affordances, routines, relationships, and memories.
+2. If the decision is routine, urgent, low-stakes, or cognitively loaded, accept the first feasible candidate whose score clears `aspiration_level`.
+3. If the decision is novel, high-stakes, morally loaded, or institutionally risky, compare candidates more deliberately.
+
+Represent common judgment shortcuts explicitly:
+
+| Heuristic | Simulation signal | Bias risk |
+|---|---|---|
+| Representativeness | current case resembles a known category or prior episode | base rates may be ignored |
+| Availability | recent, vivid, emotional, or frequently retrieved memory is easy to recall | probability may be overestimated |
+| Anchoring | prior estimate, first price, first plan, or social suggestion is present | adjustment may be insufficient |
+
+These fields should be logged as biasing influences, not treated as verified facts.
+
 ## Practical notes
 
 - Preserve continuity: do not allow huge emotion swings without a major event.
@@ -425,5 +458,7 @@ Then output only top candidate with brief reasoning.
 ## References
 
 - Ajzen, I. (1991). The theory of planned behavior. *Organizational Behavior and Human Decision Processes*.
+- Simon, H. A. (1955). A behavioral model of rational choice. *The Quarterly Journal of Economics*, 69(1), 99-118. DOI: `10.2307/1884852`.
+- Tversky, A., & Kahneman, D. (1974). Judgment under uncertainty: Heuristics and biases. *Science*, 185(4157), 1124-1131. DOI: `10.1126/science.185.4157.1124`.
 - Scherer, K. R. (2001). Appraisal considered as a process of multilevel sequential checking. In *Appraisal Processes in Emotion*.
 - Ortony, A., Clore, G. L., & Collins, A. (1988). *The Cognitive Structure of Emotions*.

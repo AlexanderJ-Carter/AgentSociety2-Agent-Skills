@@ -22,6 +22,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--learning-rate", type=float, default=0.08)
     parser.add_argument("--automaticity-rate", type=float, default=0.05)
     parser.add_argument("--retention-strength", type=float, default=240.0)
+    parser.add_argument("--target-retention-interval", type=int, default=240)
+    parser.add_argument("--spacing-ratio", type=float, default=0.2)
     return parser.parse_args()
 
 
@@ -83,6 +85,79 @@ def event_scores(text: str, plan_state: dict[str, Any], emotion: dict[str, Any])
         "persuasion": 0.025 if encouraged else -0.025 if criticized else 0.0,
         "affect": 0.02 * joy - 0.03 * anxiety,
         "context_consistency": 0.8 if practiced else 0.3,
+        "success": 1.0 if success else 0.0,
+        "failure": 1.0 if failure else 0.0,
+        "watched": 1.0 if watched else 0.0,
+        "encouraged": 1.0 if encouraged else 0.0,
+        "criticized": 1.0 if criticized else 0.0,
+    }
+
+
+def update_motivation(topic_state: dict[str, Any], scores: dict[str, float]) -> dict[str, float]:
+    prev = topic_state.get("motivation", {})
+    if not isinstance(prev, dict):
+        prev = {}
+
+    autonomy = clamp(float(prev.get("autonomy", 0.5) or 0.5))
+    competence = clamp(float(prev.get("competence", topic_state.get("self_efficacy", 0.5)) or 0.5))
+    relatedness = clamp(float(prev.get("relatedness", 0.5) or 0.5))
+    internalization = clamp(float(prev.get("internalization", 0.5) or 0.5))
+
+    if scores["practice_quality"] > 0:
+        autonomy += 0.01
+        internalization += 0.01
+    competence += 0.5 * scores["mastery"]
+    relatedness += 0.03 * scores["encouraged"] + 0.015 * scores["watched"] - 0.03 * scores["criticized"]
+    autonomy -= 0.02 * scores["criticized"]
+    internalization += 0.02 * scores["success"] - 0.015 * scores["failure"]
+
+    autonomy = clamp(autonomy)
+    competence = clamp(competence)
+    relatedness = clamp(relatedness)
+    internalization = clamp(internalization)
+    autonomous_motivation = (autonomy + competence + relatedness + internalization) / 4
+
+    return {
+        "autonomy": round(autonomy, 3),
+        "competence": round(competence, 3),
+        "relatedness": round(relatedness, 3),
+        "internalization": round(internalization, 3),
+        "amotivation_risk": round(1 - autonomous_motivation, 3),
+    }
+
+
+def update_review_schedule(
+    topic_state: dict[str, Any],
+    tick: int,
+    scores: dict[str, float],
+    target_retention_interval: int,
+    spacing_ratio: float,
+) -> dict[str, Any]:
+    prev = topic_state.get("review", {})
+    if not isinstance(prev, dict):
+        prev = {}
+
+    target = max(1, int(prev.get("target_retention_interval", target_retention_interval) or target_retention_interval))
+    ratio = clamp(float(prev.get("spacing_ratio", spacing_ratio) or spacing_ratio), 0.05, 0.8)
+    previous_due = int(prev.get("next_review_tick", tick) or tick)
+    review_due = tick >= previous_due
+
+    if scores["practice_quality"] > 0:
+        if review_due and scores["success"]:
+            ratio = clamp(ratio * 1.35, 0.05, 0.8)
+        elif review_due and scores["failure"]:
+            ratio = clamp(ratio * 0.65, 0.05, 0.8)
+        gap = max(1, round(target * ratio))
+        next_review_tick = tick + gap
+    else:
+        next_review_tick = previous_due
+
+    return {
+        "target_retention_interval": target,
+        "spacing_ratio": round(ratio, 3),
+        "next_review_tick": int(next_review_tick),
+        "review_due": bool(tick >= next_review_tick),
+        "was_review_due": bool(review_due),
     }
 
 
@@ -93,6 +168,8 @@ def update_topic(
     learning_rate: float,
     automaticity_rate: float,
     retention_strength: float,
+    target_retention_interval: int,
+    spacing_ratio: float,
     evidence: str,
 ) -> dict[str, Any]:
     previous_tick = int(topic_state.get("last_practice_tick", tick))
@@ -114,6 +191,10 @@ def update_topic(
     self_efficacy = clamp(
         self_efficacy + scores["mastery"] + scores["vicarious"] + scores["persuasion"] + scores["affect"]
     )
+    topic_state_for_motivation = dict(topic_state)
+    topic_state_for_motivation["self_efficacy"] = self_efficacy
+    motivation = update_motivation(topic_state_for_motivation, scores)
+    review = update_review_schedule(topic_state, tick, scores, target_retention_interval, spacing_ratio)
 
     old_evidence = topic_state.get("evidence", [])
     if not isinstance(old_evidence, list):
@@ -125,6 +206,8 @@ def update_topic(
         "retention": round(retention, 3),
         "automaticity": round(automaticity, 3),
         "self_efficacy": round(self_efficacy, 3),
+        "motivation": motivation,
+        "review": review,
         "practice_count": practice_count,
         "last_practice_tick": previous_tick,
         "evidence": evidence_items,
@@ -153,6 +236,8 @@ def main() -> int:
             args.learning_rate,
             args.automaticity_rate,
             args.retention_strength,
+            args.target_retention_interval,
+            args.spacing_ratio,
             observation[:160],
         )
         summary = f"{topic} updated: proficiency {topics[topic]['proficiency']}, self-efficacy {topics[topic]['self_efficacy']}."
@@ -160,7 +245,7 @@ def main() -> int:
     output = {
         "_meta": {
             "skill": "learning",
-            "purpose": "Current knowledge, skill proficiency, practice history, automaticity, and self-efficacy.",
+            "purpose": "Current knowledge, skill proficiency, practice history, automaticity, self-efficacy, motivation, and review timing.",
         },
         "_summary": summary,
         "tick": args.tick,

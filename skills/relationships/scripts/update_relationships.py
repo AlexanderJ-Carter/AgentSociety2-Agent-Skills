@@ -50,6 +50,14 @@ def normalize_delta(delta: dict[str, Any]) -> dict[str, float]:
     return out
 
 
+def compute_influence_weight(entry: dict[str, Any], expertise_hint: float = 0.0) -> float:
+    trust = clamp(float(entry.get("trust", 0.5)))
+    respect = clamp(float(entry.get("respect", 0.5)))
+    familiarity = clamp(float(entry.get("familiarity", 0.1)))
+    conflict = clamp(float(entry.get("conflict", 0.0)))
+    return clamp(0.35 * trust + 0.25 * respect + 0.2 * familiarity + 0.2 * expertise_hint - 0.25 * conflict)
+
+
 def main() -> int:
     payload = parse_payload()
 
@@ -149,6 +157,12 @@ def main() -> int:
         for k in REL_KEYS:
             base[k] = round(clamp(base[k] + delta[k]), 3)
 
+        try:
+            expertise_hint = float(item.get("expertise_hint", item.get("expertise", 0.0)) or 0.0)
+        except (TypeError, ValueError):
+            expertise_hint = 0.0
+        influence_weight = round(compute_influence_weight(base, expertise_hint), 3)
+
         old_tags = entry.get("shared_history_tags", [])
         if not isinstance(old_tags, list):
             old_tags = []
@@ -164,6 +178,7 @@ def main() -> int:
 
         people[person_id] = {
             **base,
+            "influence_weight": influence_weight,
             "last_interaction": interaction_summary,
             "last_interaction_tick": tick,
             "last_interaction_time": iso_time,

@@ -47,6 +47,18 @@ def sum_numbers(items: list[Any]) -> float:
     return total
 
 
+def affordability_score(label: str) -> float:
+    scores = {
+        "affordable": 0.9,
+        "limited": 0.65,
+        "expensive": 0.45,
+        "risky": 0.3,
+        "defer": 0.25,
+        "not_recommended": 0.15,
+    }
+    return scores.get(label, 0.4)
+
+
 def main() -> int:
     payload = parse_payload()
 
@@ -114,6 +126,24 @@ def main() -> int:
     else:
         leisure_afford = "defer"
 
+    aspiration_prev = prev_economy.get("choice_policy", {}) if isinstance(prev_economy.get("choice_policy"), dict) else {}
+    aspiration_level = clamp(float(payload.get("aspiration_level", aspiration_prev.get("aspiration_level", 0.62))))
+    if budget_stress > 0.7:
+        aspiration_level = clamp(aspiration_level + 0.06)
+    elif budget_stress < 0.25:
+        aspiration_level = clamp(aspiration_level - 0.03)
+
+    candidate_scores = {
+        "meal": affordability_score(meal_afford),
+        "taxi": affordability_score(taxi_afford),
+        "leisure": affordability_score(leisure_afford),
+    }
+    accepted = [name for name, score in candidate_scores.items() if score >= aspiration_level]
+    if accepted:
+        search_stopped_reason = f"first satisfactory option: {accepted[0]}"
+    else:
+        search_stopped_reason = "no affordability category met aspiration threshold"
+
     income_status = str(payload.get("income_status", prev_economy.get("income_status", "unknown")))
     next_income_expected = str(
         payload.get("next_income_expected", prev_economy.get("next_income_expected", "unknown"))
@@ -173,6 +203,12 @@ def main() -> int:
             "meal": meal_afford,
             "taxi": taxi_afford,
             "leisure": leisure_afford,
+        },
+        "choice_policy": {
+            "mode": "satisficing",
+            "aspiration_level": round(aspiration_level, 3),
+            "candidate_scores": {k: round(v, 3) for k, v in candidate_scores.items()},
+            "search_stopped_reason": search_stopped_reason,
         },
         "notes": [
             "Deterministic economy baseline.",

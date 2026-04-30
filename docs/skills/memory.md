@@ -27,7 +27,7 @@ You are the agent's long-term memory system with automatic forgetting and retrie
 
 ## Internal Logic (One Sentence)
 
-Select a small set of high-signal events from this tick, append them to `state/memory.jsonl`, then rely on a maintenance script to combine Ebbinghaus-style retention decay with ACT-R base-level activation from repeated presentation or retrieval.
+Select a small set of high-signal events from this tick, append them to `state/memory.jsonl`, then rely on a maintenance script to combine Ebbinghaus-style retention decay, ACT-R base-level activation, and optional spaced-review metadata from repeated presentation or retrieval.
 
 ## Architecture (conceptual)
 
@@ -103,6 +103,25 @@ When a memory is accessed or re-encoded:
 - Keep `_presentations` short if needed by retaining the newest and most important ticks.
 
 This models retrieval practice and repeated exposure without pretending the simulation has exact human neural memory.
+
+### Spaced Review Metadata
+
+For memories that should be deliberately revisited, optionally add:
+
+| Field | Meaning |
+|-------|---------|
+| `_target_retention_interval` | How many ticks the memory should remain useful |
+| `_spacing_ratio` | Conservative review gap as a fraction of the retention target, often `0.1`-`0.3` |
+| `_next_review_tick` | Tick when retrieval should be attempted again |
+| `_last_retrieval_success` | Whether the last review succeeded |
+
+Guidelines:
+
+- Use short review intervals for information needed soon.
+- Use longer intervals for long-term identity, relationship, route, promise, or skill-relevant facts.
+- Successful retrieval should increase strength and usually lengthen the next interval.
+- Failed retrieval should shorten the next interval and keep the memory available for relearning.
+- Avoid dense repetition immediately after successful recall; it has lower marginal benefit.
 
 ### Memory Limits
 
@@ -310,6 +329,29 @@ retention=\max(R_{Ebbinghaus}, P(retrieve))
 - 被反复遇到的人、地点、规则、承诺会更稳定；
 - 模拟中“熟悉感”和“社会连续性”不必完全依赖 LLM 临场回忆。
 
+## Spacing effects：间隔复习服务于保持目标
+
+记忆不应该只有“永久保存/立刻遗忘”两个状态。分散学习研究显示，复习间隔和最终保持目标共同影响长期记忆；想保持越久，复习间隔通常也应越长。
+
+仿真中可以给重要记忆加可选调度字段：
+
+```text
+next_review_tick = current_tick + round(target_retention_interval * spacing_ratio)
+```
+
+- `_target_retention_interval`：这条记忆希望保持多久。
+- `_spacing_ratio`：默认可从 `0.1` 到 `0.3` 起步。
+- `_next_review_tick`：下一次主动检索/复习时间。
+- `_last_retrieval_success`：上次检索是否成功。
+
+更新规则：
+
+- 近期要用的信息：间隔短。
+- 长期要用的信息：间隔长。
+- 成功回忆：增加 `_access_count`，追加 `_presentations`，并延长下一次间隔。
+- 回忆失败：降低有效保留度或缩短下一次间隔。
+- 刚刚成功回忆后马上重复：增益较小，避免无限刷高强度。
+
 ## 参数建议
 
 | 参数 | 默认 | 含义 | 调参方向 |
@@ -326,3 +368,5 @@ retention=\max(R_{Ebbinghaus}, P(retrieve))
 - ACT-R base-level learning equation: repeated presentations add as power-law terms; common decay default \(d=0.5\).
 - Roediger, H. L. & Karpicke, J. D. (2006). Test-enhanced learning: taking memory tests improves long-term retention.
 - 现代 retrieval practice 综述可用于解释“检索强化”。
+- Cepeda, N. J., Pashler, H., Vul, E., Wixted, J. T., & Rohrer, D. (2006). Distributed practice in verbal recall tasks: A review and quantitative synthesis. *Psychological Bulletin*, 132(3), 354-380. DOI: `10.1037/0033-2909.132.3.354`.
+- Cepeda, N. J., Vul, E., Rohrer, D., Wixted, J. T., & Pashler, H. (2008). Spacing effects in learning: A temporal ridgeline of optimal retention. *Psychological Science*, 19(11), 1095-1102. DOI: `10.1111/j.1467-9280.2008.02209.x`.

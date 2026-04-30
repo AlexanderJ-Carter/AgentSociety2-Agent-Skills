@@ -31,6 +31,9 @@ Read any existing files from the workspace as context. Common inputs include:
 | `state/memory.jsonl` | Last 5–10 lines for continuity |
 | `state/emotion.json`, `state/intention.json` | Prior state for continuity |
 | `state/plan_state.json` | Whether a multi-step plan is in flight |
+| `state/economy.json` | Scarcity and satisficing pressure |
+| `state/learning.json` | Self-efficacy and SDT motivation signals |
+| `state/relationships.json` | Social trust, familiarity, and consensus influence |
 
 Also use **Agent Identity** from the system prompt. Other JSON in the workspace (`state/beliefs.json`, etc.) can be read if present. **Skip missing files gracefully.**
 
@@ -195,11 +198,16 @@ Emotions also create natural behavioral tendencies that should bias candidate se
 1. List up to 5 candidate goals (fewer is fine).
 2. If the workspace contains urgency signals (e.g., unmet needs), prefer candidates that address them; otherwise leisure or exploration is appropriate.
 3. Score each candidate with the three TPB fields (base values).
-4. **Apply emotion modifiers** to attitude and perceived_control based on current emotion state.
-5. **Consider emotion-behavior tendencies** when ranking candidates.
-6. Assign `priority` to each candidate based on final_score.
-7. Emit only the best candidate as `state/intention.json` (highest final_score, or lowest `priority`).
-8. Phrase `intention` as a goal ("Eat lunch at the café"), not step-by-step motor instructions.
+4. Apply bounded-rationality search: when time, attention, or uncertainty is high, stop at a feasible candidate that clears an aspiration threshold instead of over-optimizing.
+5. **Apply emotion modifiers** to attitude and perceived_control based on current emotion state.
+6. **Consider emotion-behavior tendencies** when ranking candidates.
+7. Apply uncertainty heuristics only as transparent biases, not as hidden facts:
+   - representativeness: familiar-looking situations raise perceived likelihood of similar outcomes
+   - availability: vivid/recent memories raise salience
+   - anchoring: previous estimates or first offers pull numeric judgments unless there is strong contrary evidence
+8. Assign `priority` to each candidate based on final_score.
+9. Emit only the best or first-satisfactory candidate as `state/intention.json`.
+10. Phrase `intention` as a goal ("Eat lunch at the café"), not step-by-step motor instructions.
 
 ### Example Calculation
 
@@ -273,6 +281,11 @@ Final scores:
   "subjective_norm": 0.7,
   "perceived_control": 0.8,
   "final_score": 2.4,
+  "decision_process": {
+    "search_policy": "satisficing",
+    "aspiration_level": 1.8,
+    "heuristics": ["availability: recent hunger memory increased meal salience"]
+  },
   "emotion_influence": {
     "joy_modifier": 0.05,
     "applied_modifiers": ["joy > 7: +0.10 attitude"]
