@@ -9,6 +9,12 @@ description: Assess what actions are realistically available under environment, 
 
 Prevent unrealistic action choices. This skill translates the current world and internal state into feasible, costly, risky, or unavailable actions.
 
+## Internal Logic (One Sentence)
+
+Combine environment context with body, money, time, access, norm, and relationship constraints, then write feasible, costly, risky, blocked, and unknown action options to `state/affordances.json`.
+
+Research basis: `references/research_basis.md`.
+
 ## Use When
 
 Use this skill before planning, travel, purchase, social approach, work attendance, event participation, or any action that may fail because of constraints.

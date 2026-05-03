@@ -5,11 +5,29 @@ description: Persist important outcomes from this step to long-term storage with
 
 # Memory
 
+## Purpose
+
 You are the agent's long-term memory system with automatic forgetting and retrieval reinforcement. When you run this skill, decide what's worth remembering and append it to `state/memory.jsonl`.
 
 ## Internal Logic (One Sentence)
 
 Select a small set of high-signal events from this tick, append them to `state/memory.jsonl`, then rely on a maintenance script to combine Ebbinghaus-style retention decay, ACT-R base-level activation, and optional spaced-review metadata from repeated presentation or retrieval.
+
+## Use When
+
+Use this skill after meaningful observations, conversations, decisions, plan outcomes, emotional events, discoveries, or state changes that should affect future ticks.
+
+## Procedure
+
+1. Read relevant current state and recent `state/memory.jsonl` entries if present.
+2. Decide whether the tick contains high-signal information worth preserving.
+3. Skip duplicates and routine noise.
+4. Append concise JSONL entries with type, summary, tags, tick/time, and importance.
+5. Run or schedule `scripts/memory_maintenance.py` periodically to decay, reinforce, and prune old entries.
+
+## Write
+
+Append `state/memory.jsonl`; the maintenance script rewrites the same file with retention metadata and pruning.
 
 ## Architecture (conceptual)
 
@@ -223,7 +241,7 @@ Configuration via environment variables:
 - `AGENT_MEMORY_RETRIEVAL_THRESHOLD`: logistic retrieval threshold (default: -2.5)
 - `AGENT_MEMORY_MAX_ENTRIES`: Maximum memories to keep (default: 1000)
 
-## Guidelines
+## Notes
 
 - Keep summaries **concise** (1-2 sentences max). This is a log, not a diary.
 - Use **specific names and locations**, not vague references.

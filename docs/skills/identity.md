@@ -10,7 +10,8 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/identity/`
 - 说明文件 / Skill file: `skills/identity/SKILL.md`
-- 最近更新 / Last updated: `2026-04-27`
+- 执行脚本 / Script baseline: none; use the natural-language procedure.
+- 最近更新 / Last updated: `2026-05-03`
 - 理论依据 / Research basis:
   - `skills/identity/references/theory.md`
 
@@ -27,6 +28,10 @@ description: Maintain self-concept, social identity, roles, values, status conce
 ## Purpose
 
 Model the agent's sense of self: roles, group memberships, values, dignity, status, aspirations, and threats to identity.
+
+## Internal Logic (One Sentence)
+
+Use profile, relationship, culture, norms, reflections, and current events to estimate active roles, identity salience, belonging, status concern, support, and threat in `state/identity.json`.
 
 ## Use When
 

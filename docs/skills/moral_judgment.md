@@ -10,6 +10,7 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/moral_judgment/`
 - 说明文件 / Skill file: `skills/moral_judgment/SKILL.md`
+- 执行脚本 / Script baseline: `scripts/update_moral_judgment.py`
 - 最近更新 / Last updated: `2026-04-27`
 - 理论依据 / Research basis:
   - `skills/moral_judgment/references/research_basis.md`

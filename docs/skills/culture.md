@@ -10,8 +10,10 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/culture/`
 - 说明文件 / Skill file: `skills/culture/SKILL.md`
-- 最近更新 / Last updated: `2026-04-27`
-- 理论依据 / Research basis: no bundled reference file.
+- 执行脚本 / Script baseline: none; use the natural-language procedure.
+- 最近更新 / Last updated: `2026-05-03`
+- 理论依据 / Research basis:
+  - `skills/culture/references/research_basis.md`
 
 ## SKILL.md（原文）
 
@@ -26,6 +28,12 @@ description: Apply cultural values, etiquette, rituals, symbols, taboos, and loc
 ## Purpose
 
 Model the agent as a cultural person. Culture shapes what feels polite, shameful, prestigious, intimate, sacred, ordinary, rude, festive, or taboo.
+
+## Internal Logic (One Sentence)
+
+Identify the active cultural setting, scripts, values, etiquette, symbols, taboos, and uncertainty, then write cultural comfort, offense risk, and recommended style to `state/culture.json`.
+
+Research basis: `references/research_basis.md`.
 
 ## Use When
 
@@ -61,3 +69,40 @@ Write `state/culture.json`.
 
 Culture should not be a stereotype. Use profile, setting, relationship, and observed behavior. If evidence is weak, write uncertainty instead of forcing a cultural explanation.
 ```
+
+## 理论依据 / Research Basis
+
+### `research_basis.md`
+
+# Culture Research Basis
+
+## Model
+
+Culture is treated as shared meaning, scripts, values, norms, symbols, and practice rather than fixed stereotypes.
+
+## Update Rule
+
+```text
+cultural_salience = max(place_signal, role_signal, ritual_signal, audience_signal)
+misunderstanding_risk = clamp(context_uncertainty + value_conflict + language_gap + taboo_salience, 0, 1)
+cultural_comfort = clamp(familiarity + fit_with_values - risk, 0, 1)
+```
+
+## Variables
+
+- `active_context`: current place, group, role, ritual, or audience.
+- `values_in_play`: values relevant to the current choice.
+- `etiquette`: setting-specific behavior expectations.
+- `taboos`: actions or topics likely to cause offense.
+- `cultural_comfort`: confidence that behavior fits the setting, `[0, 1]`.
+- `misunderstanding_risk`: likelihood of cross-cultural friction, `[0, 1]`.
+
+## Defaults
+
+When evidence is weak, record uncertainty and avoid broad group claims. Prefer observed local context over demographic assumptions.
+
+## Sources
+
+- Geertz, C. (1973). *The Interpretation of Cultures*.
+- Hofstede, G. (1980). *Culture's Consequences*.
+- Goffman, E. (1959). *The Presentation of Self in Everyday Life*.

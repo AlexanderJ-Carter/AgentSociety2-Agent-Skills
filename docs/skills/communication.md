@@ -10,7 +10,8 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/communication/`
 - 说明文件 / Skill file: `skills/communication/SKILL.md`
-- 最近更新 / Last updated: `2026-04-27`
+- 执行脚本 / Script baseline: none; use the natural-language procedure.
+- 最近更新 / Last updated: `2026-05-03`
 - 理论依据 / Research basis:
   - `skills/communication/references/theory.md`
 
@@ -27,6 +28,10 @@ description: Model conversation intent, speech style, turn-taking, listening, re
 ## Purpose
 
 Maintain how the agent communicates with others: what it wants to say, how direct it is, whether it listens, how it repairs misunderstandings, and what nonverbal signals matter.
+
+## Internal Logic (One Sentence)
+
+Use participants, relationship, culture, norms, emotion, and conversational context to select communicative intent, style, turn state, and repair strategy, then write `state/communication.json`.
 
 ## Use When
 

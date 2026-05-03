@@ -6,6 +6,8 @@ script: scripts/update_cognition.py
 
 # Cognition
 
+## Purpose
+
 Read available workspace context and produce `state/emotion.json` and `state/intention.json`.
 
 Research basis: `references/research_basis.md`.
@@ -13,6 +15,22 @@ Research basis: `references/research_basis.md`.
 ## Internal Logic (One Sentence)
 
 Appraise the current tick for novelty, pleasantness, goal conduciveness, urgency, controllability, norm pressure, and need pressure, then write bounded emotion/mood state to `state/emotion.json` and the highest-scoring TPB intention to `state/intention.json`.
+
+## Use When
+
+Use this skill after observation and relevant domain skills have written state, especially when emotion, mood, urgency, social pressure, or feasible goals may change.
+
+## Procedure
+
+1. Read available workspace state and skip missing files gracefully.
+2. Appraise the current tick across emotion, need, norm, control, and uncertainty dimensions.
+3. Update mood and emotion with continuity limits.
+4. Generate and score candidate intentions with TPB, emotion modifiers, and bounded rationality.
+5. Write `state/emotion.json` and `state/intention.json`.
+
+## Write
+
+Write `state/emotion.json` and `state/intention.json`.
 
 ## Output Files
 

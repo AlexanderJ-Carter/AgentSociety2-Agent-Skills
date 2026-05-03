@@ -2,9 +2,12 @@
   --as2-ink: #111827;
   --as2-muted: #526070;
   --as2-line: #d8dee8;
+  --as2-line-soft: #e8edf4;
   --as2-teal: #0f766e;
   --as2-blue: #2563eb;
+  --as2-gold: #b7791f;
   --as2-paper: #f8fafc;
+  --as2-surface: #ffffff;
 }
 
 .md-header {
@@ -22,27 +25,92 @@
 
 .as2-hero {
   display: grid;
-  gap: 1.1rem;
-  padding: 2.2rem;
-  margin: 0 0 1.5rem;
+  grid-template-columns: minmax(0, 1.6fr) minmax(14rem, 0.78fr);
+  align-items: stretch;
+  gap: 1.4rem;
+  padding: clamp(1.15rem, 3vw, 2rem);
+  margin: 0 0 1.8rem;
   border: 1px solid var(--as2-line);
   border-radius: 12px;
   background:
-    linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(37, 99, 235, 0.07)),
+    radial-gradient(circle at 92% 12%, rgba(183, 121, 31, 0.13), transparent 25rem),
+    linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(37, 99, 235, 0.06)),
     var(--as2-paper);
+}
+
+.as2-hero__content {
+  display: grid;
+  align-content: center;
+  gap: 0.72rem;
 }
 
 .as2-hero h1 {
   margin: 0;
-  font-size: 2.2rem;
-  line-height: 1.12;
+  font-size: clamp(1.55rem, 2.45vw, 2.05rem);
+  line-height: 1.14;
 }
 
 .as2-hero p {
   max-width: 48rem;
   margin: 0;
   color: var(--as2-muted);
-  font-size: 1.02rem;
+  font-size: 0.95rem;
+}
+
+.as2-hero__panel {
+  align-self: stretch;
+  padding: 0.9rem;
+  border: 1px solid var(--as2-line-soft);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.as2-hero__panel strong {
+  display: block;
+  margin-bottom: 0.7rem;
+  color: var(--as2-ink);
+}
+
+.as2-hero__panel ol {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.as2-hero__panel li {
+  color: var(--as2-muted);
+}
+
+.as2-hero__panel span {
+  color: var(--as2-teal);
+  font-weight: 700;
+}
+
+.as2-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 0.2rem;
+}
+
+.as2-button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.2rem;
+  padding: 0.48rem 0.78rem;
+  border: 1px solid var(--as2-line);
+  border-radius: 8px;
+  background: var(--as2-surface);
+  color: var(--as2-ink) !important;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.as2-button--primary {
+  border-color: var(--as2-teal);
+  background: var(--as2-teal);
+  color: #ffffff !important;
 }
 
 .as2-grid {
@@ -57,7 +125,13 @@
   padding: 1rem;
   border: 1px solid var(--as2-line);
   border-radius: 8px;
-  background: #ffffff;
+  background: var(--as2-surface);
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.as2-card:hover {
+  border-color: rgba(15, 118, 110, 0.45);
+  transform: translateY(-1px);
 }
 
 .as2-card strong {
@@ -72,8 +146,7 @@
 }
 
 .as2-kicker {
-  display: inline-block;
-  margin-bottom: 0.5rem;
+  margin: 0;
   color: var(--as2-teal);
   font-size: 0.72rem;
   font-weight: 700;
@@ -82,16 +155,83 @@
 }
 
 .as2-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
   padding: 0.85rem 1rem;
+  border: 1px solid var(--as2-line);
   border-left: 4px solid var(--as2-teal);
+  border-radius: 8px;
   background: #f1f5f9;
   color: var(--as2-ink);
 }
 
+.as2-flow span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.8rem;
+  padding: 0 0.62rem;
+  border: 1px solid var(--as2-line-soft);
+  border-radius: 999px;
+  background: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.as2-flow span:not(:last-child)::after {
+  content: "→";
+  margin-left: 0.5rem;
+  color: var(--as2-muted);
+}
+
+.as2-split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 1rem 0 1.6rem;
+}
+
+.as2-split > div {
+  padding: 1rem;
+  border-top: 3px solid var(--as2-teal);
+  background: #f8fafc;
+}
+
+.as2-split h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.95rem;
+}
+
+.as2-split p {
+  margin: 0;
+  color: var(--as2-muted);
+  font-size: 0.82rem;
+}
+
 .md-typeset table:not([class]) {
-  font-size: 0.72rem;
+  display: block;
+  overflow-x: auto;
+  font-size: 0.73rem;
+  white-space: nowrap;
+}
+
+.md-typeset table:not([class]) th {
+  background: #f1f5f9;
+  color: var(--as2-ink);
 }
 
 .md-typeset code {
   border-radius: 4px;
+}
+
+@media screen and (max-width: 720px) {
+  .as2-hero,
+  .as2-split {
+    grid-template-columns: 1fr;
+  }
+
+  .as2-card {
+    min-height: auto;
+  }
 }

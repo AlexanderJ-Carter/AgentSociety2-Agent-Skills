@@ -9,6 +9,10 @@ description: Maintain self-concept, social identity, roles, values, status conce
 
 Model the agent's sense of self: roles, group memberships, values, dignity, status, aspirations, and threats to identity.
 
+## Internal Logic (One Sentence)
+
+Use profile, relationship, culture, norms, reflections, and current events to estimate active roles, identity salience, belonging, status concern, support, and threat in `state/identity.json`.
+
 ## Use When
 
 Use this skill when actions involve family role, job role, class, gender, age, community, religion, ethnicity, profession, reputation, pride, shame, discrimination, belonging, or life goals.

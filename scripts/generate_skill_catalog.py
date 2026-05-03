@@ -36,6 +36,7 @@ class SkillMeta:
     description: str
     skill_dir: Path
     skill_md_text: str
+    script: str | None
     reference_files: tuple[Path, ...]
     last_updated: str
 
@@ -105,6 +106,7 @@ def _load_skill_meta(repo_root: Path, skill_dir: Path) -> SkillMeta:
     fm = _parse_frontmatter(text)
     name = fm.get("name", "").strip()
     description = fm.get("description", "").strip()
+    script = fm.get("script", "").strip() or None
     if not name:
         raise ValueError(f"Missing frontmatter field 'name' in {skill_md}")
     if not description:
@@ -116,6 +118,7 @@ def _load_skill_meta(repo_root: Path, skill_dir: Path) -> SkillMeta:
         description=description,
         skill_dir=skill_dir,
         skill_md_text=text,
+        script=script,
         reference_files=reference_files,
         last_updated=_skill_last_updated(repo_root, skill_dir),
     )
@@ -135,6 +138,7 @@ def build_catalog_md(skills: list[SkillMeta]) -> str:
     lines.append("")
     lines.append("- 先从核心运行链路开始：`observation -> cognition -> plan -> memory`。")
     lines.append("- 再按仿真需要加入身体、社会关系、经济、制度、信息环境等领域技能。")
+    lines.append("- 本仓库采用 Claude Skill style：短 frontmatter、可执行正文、脚本与 references 渐进披露。")
     lines.append("- 带有理论依据的技能页面会显示 `Research Basis`，可以直接查看公式、变量范围和引用。")
     lines.append("")
     lines.append("Start with the core loop, then add domain skills only when the simulation needs that source of pressure or continuity.")
@@ -145,14 +149,15 @@ def build_catalog_md(skills: list[SkillMeta]) -> str:
         lines.append("")
         lines.append(description)
         lines.append("")
-        lines.append("| Skill | What it does | Last updated | Research basis |")
-        lines.append("|---|---|---|---|")
+        lines.append("| Skill | Runtime role | What it does | Script | Research basis | Last updated |")
+        lines.append("|---|---|---|---|---|---|")
         for name in names:
             skill = by_name.get(name)
             if not skill:
                 continue
             refs = "yes / 有" if skill.reference_files else "not bundled / 未内置"
-            lines.append(f"| [`{skill.name}`](./{skill.name}.md) | {skill.description} | {skill.last_updated} | {refs} |")
+            script = f"`{skill.script}`" if skill.script else "LLM only / 无脚本"
+            lines.append(f"| [`{skill.name}`](./{skill.name}.md) | {title} | {skill.description} | {script} | {refs} | {skill.last_updated} |")
         lines.append("")
 
     remaining = [s for s in skills if s.name not in grouped_names]
@@ -161,7 +166,8 @@ def build_catalog_md(skills: list[SkillMeta]) -> str:
         lines.append("")
         for s in remaining:
             refs = "；含理论依据 / includes research basis" if s.reference_files else ""
-            lines.append(f"- **[`{s.name}`](./{s.name}.md)** ({s.last_updated}): {s.description} {refs}".rstrip())
+            script = f"；script `{s.script}`" if s.script else ""
+            lines.append(f"- **[`{s.name}`](./{s.name}.md)** ({s.last_updated}{script}): {s.description} {refs}".rstrip())
         lines.append("")
     lines.append("")
     return "\n".join(lines)
@@ -181,6 +187,7 @@ def build_skill_page_md(skill: SkillMeta) -> str:
     lines.append("")
     lines.append(f"- 技能目录 / Skill folder: `skills/{skill.name}/`")
     lines.append(f"- 说明文件 / Skill file: `skills/{skill.name}/SKILL.md`")
+    lines.append(f"- 执行脚本 / Script baseline: `{skill.script}`" if skill.script else "- 执行脚本 / Script baseline: none; use the natural-language procedure.")
     lines.append(f"- 最近更新 / Last updated: `{skill.last_updated}`")
     if skill.reference_files:
         lines.append("- 理论依据 / Research basis:")

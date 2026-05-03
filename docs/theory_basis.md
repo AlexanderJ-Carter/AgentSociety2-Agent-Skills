@@ -18,18 +18,21 @@ This page gives users a quick map from each simulation skill to the theory, mode
 | `cognition` | 情绪评估、启发式判断与意图选择 | Emotion appraisal, heuristic judgment, and intention selection | Scherer Component Process Model; Theory of Planned Behavior; bounded rationality; heuristics and biases | `skills/cognition/references/research_basis.md` |
 | `circadian` | 昼夜节律、睡眠压力、食欲节律 | Circadian rhythm, sleep pressure, appetite rhythm | Two-process sleep regulation; circadian oscillator; chronotype | `skills/circadian/references/research_basis.md` |
 | `physiology` | 饥饿、口渴、疲劳、压力等身体需求 | Hunger, thirst, fatigue, stress, pain, illness | Homeostasis/allostasis; metabolic pressure; stress recovery | `skills/physiology/references/research_basis.md` |
-| `health` | 疾病、疼痛、慢性压力和恢复 | Illness, pain, chronic stress, recovery | Biopsychosocial health; stress load; recovery dynamics | `skills/health/references/research_basis.md` |
-| `routine` | 日常作息和习惯 | Daily routines and habits | Habit loop; cue-routine-reward; automaticity | See `SKILL.md` and script |
+| `health` | 疾病、疼痛、慢性压力和恢复 | Illness, pain, chronic stress, recovery | Biopsychosocial health; allostatic load; recovery dynamics | `skills/health/references/research_basis.md` |
+| `routine` | 日常作息和习惯 | Daily routines and habits | Habit loop; cue-routine-reward; automaticity | `skills/routine/references/research_basis.md` |
 | `relationships` | 熟悉度、信任、喜欢、义务、冲突、社会影响 | Familiarity, trust, liking, obligation, conflict, social influence | Interpersonal trust; repeated interaction; reciprocity; DeGroot consensus | `skills/relationships/references/research_basis.md` |
-| `norms` | 角色、规范压力、制裁和羞耻/内疚风险 | Roles, norm pressure, sanctions, shame/guilt risk | Social norms; role expectations; sanction risk | See `SKILL.md` and script |
+| `norms` | 角色、规范压力、制裁和羞耻/内疚风险 | Roles, norm pressure, sanctions, shame/guilt risk | Social norms; role expectations; sanction risk | `skills/norms/references/research_basis.md` |
 | `economy` | 金钱、消费、工作义务、稀缺压力、满意化选择 | Money, consumption, work obligation, scarcity pressure, satisficing | Scarcity pressure; bounded rationality; satisficing | `skills/economy/references/research_basis.md` |
-| `affordance` | 行动可行性、成本、风险和阻碍 | Feasible/costly/risky/blocked actions | Ecological affordances; constraint-based planning | See `SKILL.md` and script |
+| `affordance` | 行动可行性、成本、风险和阻碍 | Feasible/costly/risky/blocked actions | Ecological affordances; constraint-based planning | `skills/affordance/references/research_basis.md` |
 | `learning` | 熟练度、保持率、自动化程度、自我效能、动机和复习间隔 | Proficiency, retention, automaticity, self-efficacy, motivation, review spacing | Bandura self-efficacy; habit automaticity; retention decay; self-determination theory; spacing effect | `skills/learning/references/research_basis.md` |
 | `moral_judgment` | 道德基础、道德情绪和修复/惩罚倾向 | Moral foundations, moral emotions, repair/punishment tendencies | Moral Foundations Theory; social intuitionist model | `skills/moral_judgment/references/research_basis.md` |
 | `media_literacy` | 来源可信度、误导风险、预辟谣和信念更新 | Source credibility, misinformation risk, inoculation, belief uptake | Motivated reasoning; elaboration likelihood; inoculation theory | `skills/media_literacy/references/research_basis.md` |
 | `civic_institution` | 制度互动、程序正义、合规和制度信任 | Institutional encounters, procedural justice, compliance, trust | Procedural justice; institutional legitimacy; access barriers | `skills/civic_institution/references/research_basis.md` |
 | `identity` | 身份、自我概念和角色冲突 | Identity, self-concept, role conflict | Social identity and role theory | `skills/identity/references/theory.md` |
 | `communication` | 对话、语气、含义和修复 | Conversation, tone, meaning, repair | Pragmatics and communication theory | `skills/communication/references/theory.md` |
+| `observation` | 当前世界状态、可感知对象和可行动作 | Current world grounding, percepts, and available actions | Situated cognition; perception-action coupling | `skills/observation/references/research_basis.md` |
+| `plan` | 将意图转成动作或多步计划 | Convert intention into action or multi-step plan | Dual-process decision making; bounded rationality; practical reasoning | `skills/plan/references/research_basis.md` |
+| `reflection` | 从重复经验中抽象信念、偏好和自我概念 | Abstract beliefs, preferences, and self-concept from repeated experience | Autobiographical memory; self-schema; experiential learning | `skills/reflection/references/research_basis.md` |
 
 ## 公开仓库维护约定 / Public Repository Convention
 
@@ -64,3 +67,7 @@ When adding or modifying a skill, update all of the following if the skill uses 
 - van der Linden, S. et al. (2017). Inoculating the public against misinformation.
 - Tyler, T. R. (1990/2006). *Why People Obey the Law*.
 - Lipsky, M. (1980). *Street-Level Bureaucracy*.
+- Gibson, J. J. (1979). *The Ecological Approach to Visual Perception*.
+- Suchman, L. A. (1987). *Plans and Situated Actions*.
+- Bicchieri, C. (2006). *The Grammar of Society*.
+- Engel, G. L. (1977). The need for a new medical model.

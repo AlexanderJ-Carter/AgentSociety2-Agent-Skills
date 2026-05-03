@@ -10,8 +10,10 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/routine/`
 - 说明文件 / Skill file: `skills/routine/SKILL.md`
-- 最近更新 / Last updated: `2026-04-27`
-- 理论依据 / Research basis: no bundled reference file.
+- 执行脚本 / Script baseline: none; use the natural-language procedure.
+- 最近更新 / Last updated: `2026-05-03`
+- 理论依据 / Research basis:
+  - `skills/routine/references/research_basis.md`
 
 ## SKILL.md（原文）
 
@@ -26,6 +28,12 @@ description: Maintain daily routines, habits, schedules, and repeated life patte
 ## Purpose
 
 Update the agent's ordinary daily structure: sleep, meals, work, commute, study, leisure, chores, and recurring social commitments.
+
+## Internal Logic (One Sentence)
+
+Use time, location, role obligations, circadian state, physiology, past routine, and cue-reward evidence to update expected activity, schedule pressure, routine fit, and habits in `state/routine.json` and `state/habits.json`.
+
+Research basis: `references/research_basis.md`.
 
 ## Use When
 
@@ -71,3 +79,39 @@ Write `state/routine.json` and `state/habits.json`.
 
 Routines should make behavior stable without making it mechanical. Strong habits should bias actions toward familiar choices, but urgent needs, social events, or environmental constraints can override them.
 ```
+
+## 理论依据 / Research Basis
+
+### `research_basis.md`
+
+# Routine Research Basis
+
+## Model
+
+Daily routine scheduling, habit loops, automaticity, and cue-action-reward learning.
+
+## Update Rule
+
+```text
+habit_strength_next = clamp(habit_strength + repetition_gain + reward_gain - disruption_penalty, 0, 1)
+schedule_pressure = clamp(role_obligation + time_block_expectation + social_commitment - flexibility, 0, 1)
+routine_fit = clamp(match(current_activity, expected_activity), 0, 1)
+```
+
+## Variables
+
+- `current_time_block`: morning, midday, afternoon, evening, night, or simulation-specific block.
+- `expected_activity`: plausible routine activity for the block.
+- `schedule_pressure`: urgency from commitments and role obligations, `[0, 1]`.
+- `routine_fit`: how well current activity matches routine, `[0, 1]`.
+- `active_habits[].strength`: learned automaticity, `[0, 1]`.
+
+## Defaults
+
+Routines bias behavior but should not override critical needs, social events, health problems, or environmental constraints.
+
+## Sources
+
+- Wood, W., & Neal, D. T. (2007). A new look at habits and the habit-goal interface.
+- Lally, P. et al. (2010). How are habits formed: Modelling habit formation in the real world.
+- Verplanken, B., & Orbell, S. (2003). Reflections on past behavior.

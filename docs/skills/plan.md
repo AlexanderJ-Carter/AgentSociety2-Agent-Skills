@@ -10,8 +10,10 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/plan/`
 - 说明文件 / Skill file: `skills/plan/SKILL.md`
-- 最近更新 / Last updated: `2026-04-27`
-- 理论依据 / Research basis: no bundled reference file.
+- 执行脚本 / Script baseline: none; use the natural-language procedure.
+- 最近更新 / Last updated: `2026-05-03`
+- 理论依据 / Research basis:
+  - `skills/plan/references/research_basis.md`
 
 ## SKILL.md（原文）
 
@@ -23,9 +25,17 @@ description: Execute intentions through the environment.
 
 # Plan
 
+## Purpose
+
 Execute intentions by generating environment actions via `codegen`.
 
-## Activation
+## Internal Logic (One Sentence)
+
+Read the current intention, observation, needs, affordances, and any ongoing plan, then choose a one-tick action or update `state/plan_state.json` for multi-step execution through `codegen`.
+
+Research basis: `references/research_basis.md`.
+
+## Use When
 
 Activate this skill when you have an intention to execute.
 
@@ -206,7 +216,7 @@ For habitual actions, add to `intention.json`:
 }
 ```
 
-## Workflow
+## Procedure
 
 1. Read `state/intention.json` and `state/plan_state.json`
 2. Determine decision mode (System 1 or 2)
@@ -225,6 +235,10 @@ For habitual actions, add to `intention.json`:
 - Prefer System 1 for routines, System 2 for novel goals
 - Always check needs before executing plan step
 
+## Write
+
+Write or update `state/plan_state.json` for multi-step, interrupted, failed, or completed plans. Routine one-step actions may only call `codegen` and then refresh observation state.
+
 ## Re-observation
 
 After each `codegen` action:
@@ -233,4 +247,49 @@ After each `codegen` action:
 2. Call `codegen` with `<observe>` to get updated state
 3. Update `state/observation.txt`
 4. Continue reasoning
+
+## Notes
+
+Planning should convert intentions into feasible environment actions, not invent unavailable actions or override the intention system. If no valid action is available, mark the plan blocked or call `done`.
 ```
+
+## 理论依据 / Research Basis
+
+### `research_basis.md`
+
+# Plan Research Basis
+
+## Model
+
+Dual-process action selection with bounded rationality, plus lightweight plan-state tracking for multi-step intentions.
+
+## Update Rule
+
+```text
+if routine_or_urgent_known_action:
+    decision_mode = "system1"
+    execute one feasible action
+else:
+    decision_mode = "system2"
+    create_or_continue plan_state with up to 6 steps
+```
+
+Interrupt plans when physiological need, safety, unavailable affordance, or changed intention crosses a threshold.
+
+## Variables
+
+- `decision_mode`: `system1` or `system2`.
+- `plan_state.status`: `pending`, `in_progress`, `interrupted`, `completed`, or `failed`.
+- `current_step`: active step index.
+- `estimated_ticks`: rough plan duration.
+- `interrupt_reason`: critical need, blocked action, external event, or changed intention.
+
+## Defaults
+
+Prefer one meaningful action per tick. If observation does not list a feasible action, wait, observe, or mark the plan blocked.
+
+## Sources
+
+- Kahneman, D. (2011). *Thinking, Fast and Slow*.
+- Simon, H. A. (1955). A behavioral model of rational choice.
+- Bratman, M. E. (1987). *Intention, Plans, and Practical Reason*.

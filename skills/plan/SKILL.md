@@ -5,9 +5,17 @@ description: Execute intentions through the environment.
 
 # Plan
 
+## Purpose
+
 Execute intentions by generating environment actions via `codegen`.
 
-## Activation
+## Internal Logic (One Sentence)
+
+Read the current intention, observation, needs, affordances, and any ongoing plan, then choose a one-tick action or update `state/plan_state.json` for multi-step execution through `codegen`.
+
+Research basis: `references/research_basis.md`.
+
+## Use When
 
 Activate this skill when you have an intention to execute.
 
@@ -188,7 +196,7 @@ For habitual actions, add to `intention.json`:
 }
 ```
 
-## Workflow
+## Procedure
 
 1. Read `state/intention.json` and `state/plan_state.json`
 2. Determine decision mode (System 1 or 2)
@@ -207,6 +215,10 @@ For habitual actions, add to `intention.json`:
 - Prefer System 1 for routines, System 2 for novel goals
 - Always check needs before executing plan step
 
+## Write
+
+Write or update `state/plan_state.json` for multi-step, interrupted, failed, or completed plans. Routine one-step actions may only call `codegen` and then refresh observation state.
+
 ## Re-observation
 
 After each `codegen` action:
@@ -215,3 +227,7 @@ After each `codegen` action:
 2. Call `codegen` with `<observe>` to get updated state
 3. Update `state/observation.txt`
 4. Continue reasoning
+
+## Notes
+
+Planning should convert intentions into feasible environment actions, not invent unavailable actions or override the intention system. If no valid action is available, mark the plan blocked or call `done`.

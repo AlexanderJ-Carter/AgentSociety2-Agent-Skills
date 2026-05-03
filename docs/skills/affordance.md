@@ -10,8 +10,10 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/affordance/`
 - 说明文件 / Skill file: `skills/affordance/SKILL.md`
-- 最近更新 / Last updated: `2026-04-27`
-- 理论依据 / Research basis: no bundled reference file.
+- 执行脚本 / Script baseline: none; use the natural-language procedure.
+- 最近更新 / Last updated: `2026-05-03`
+- 理论依据 / Research basis:
+  - `skills/affordance/references/research_basis.md`
 
 ## SKILL.md（原文）
 
@@ -26,6 +28,12 @@ description: Assess what actions are realistically available under environment, 
 ## Purpose
 
 Prevent unrealistic action choices. This skill translates the current world and internal state into feasible, costly, risky, or unavailable actions.
+
+## Internal Logic (One Sentence)
+
+Combine environment context with body, money, time, access, norm, and relationship constraints, then write feasible, costly, risky, blocked, and unknown action options to `state/affordances.json`.
+
+Research basis: `references/research_basis.md`.
 
 ## Use When
 
@@ -76,3 +84,48 @@ Write `state/affordances.json`.
 
 Affordance is not intention. It should not decide what the agent wants; it should clarify what the agent can realistically do and what each option costs.
 ```
+
+## 理论依据 / Research Basis
+
+### `research_basis.md`
+
+# Affordance Research Basis
+
+## Model
+
+Ecological affordance theory and constraint-based planning.
+
+## Update Rule
+
+For each candidate action, estimate:
+
+```text
+availability = environment_match * access * time_window
+cost = weighted_sum(distance, money, fatigue, social_friction, risk)
+feasibility = clamp(availability * (1 - cost), 0, 1)
+```
+
+Classify actions as:
+
+- `feasible`: `feasibility >= 0.65`
+- `costly`: `0.35 <= feasibility < 0.65`
+- `blocked`: known access, time, money, physical, or social constraint prevents action
+- `unknown`: missing evidence prevents a confident classification
+
+## Variables
+
+- `environment_match`: whether the object/place/action exists now, `[0, 1]`
+- `access`: legal, social, physical, and role-based permission, `[0, 1]`
+- `time_window`: whether the action can happen at the current time, `[0, 1]`
+- `cost`: normalized burden across money, effort, distance, risk, and social friction, `[0, 1]`
+- `perceived_control_hint`: feasibility signal for cognition, `[0, 1]`
+
+## Defaults
+
+Use conservative defaults when evidence is missing. Unknown is better than pretending an action is available.
+
+## Sources
+
+- Gibson, J. J. (1979). *The Ecological Approach to Visual Perception*.
+- Norman, D. A. (1988). *The Psychology of Everyday Things*.
+- Simon, H. A. (1955). A behavioral model of rational choice.

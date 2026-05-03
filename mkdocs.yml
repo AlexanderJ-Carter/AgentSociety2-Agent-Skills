@@ -10,12 +10,21 @@ theme:
   favicon: assets/favicon.svg
   features:
     - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
     - navigation.sections
+    - navigation.top
     - content.code.copy
   palette:
     - scheme: default
       primary: teal
       accent: blue
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - tables
+  - admonition
 
 extra_css:
   - stylesheets/extra.css
@@ -27,8 +36,34 @@ nav:
       - 技能规范 / Skill Standard: skill_standard.md
       - 技能说明 / Skill Guide: 技能说明.md
       - 理论依据 / Research Basis: theory_basis.md
+      - 核心技能 / Core:
+          - observation: skills/observation.md
+          - cognition: skills/cognition.md
+          - plan: skills/plan.md
+          - memory: skills/memory.md
+      - 身体与日常 / Body and Routine:
+          - circadian: skills/circadian.md
+          - physiology: skills/physiology.md
+          - health: skills/health.md
+          - routine: skills/routine.md
+          - learning: skills/learning.md
+      - 社会生活 / Social Life:
+          - relationships: skills/relationships.md
+          - norms: skills/norms.md
+          - culture: skills/culture.md
+          - communication: skills/communication.md
+          - identity: skills/identity.md
+          - moral_judgment: skills/moral_judgment.md
+      - 约束与制度 / Constraints:
+          - economy: skills/economy.md
+          - affordance: skills/affordance.md
+          - civic_institution: skills/civic_institution.md
+          - media_literacy: skills/media_literacy.md
+          - reflection: skills/reflection.md
   - 集成 / Integration:
       - workspace / AGENT.md: agent_context_design.md
   - 研究 / Research:
       - human_agent_research: human_agent_research.md
       - agent_framework_design_research: agent_framework_design_research.md
+  - 项目 / Project:
+      - Policies: policies.md

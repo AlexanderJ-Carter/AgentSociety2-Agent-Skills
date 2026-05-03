@@ -9,6 +9,12 @@ description: Maintain daily routines, habits, schedules, and repeated life patte
 
 Update the agent's ordinary daily structure: sleep, meals, work, commute, study, leisure, chores, and recurring social commitments.
 
+## Internal Logic (One Sentence)
+
+Use time, location, role obligations, circadian state, physiology, past routine, and cue-reward evidence to update expected activity, schedule pressure, routine fit, and habits in `state/routine.json` and `state/habits.json`.
+
+Research basis: `references/research_basis.md`.
+
 ## Use When
 
 Use this skill when the agent needs a plausible next activity, when a day begins, when time changes meaningfully, or when a repeated behavior should become a habit.

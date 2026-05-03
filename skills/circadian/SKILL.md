@@ -10,9 +10,13 @@ script: scripts/update_circadian.py
 
 Model the agent's biological time. This skill updates circadian alertness, appetite rhythm, sleep pressure, chronotype effects, and sleep tendency.
 
+## Internal Logic (One Sentence)
+
+Use clock time, chronotype, light exposure, prior sleep, and recent activity to update circadian phase, sleep pressure, appetite rhythm, and sleep tendency in `state/circadian.json` and `state/sleep.json`.
+
 Research basis: `references/research_basis.md`.
 
-## When to Use
+## Use When
 
 Use once per tick before `physiology` and `cognition`, especially in simulations with day-night cycles, work schedules, meals, fatigue, or sleep.
 
@@ -103,6 +107,6 @@ Chronotype shifts preferred timing:
 - `routine` should use chronotype to schedule meals, work, leisure, and sleep.
 - `cognition` should treat low alertness as lower perceived control and higher routine bias.
 
-## Stop Conditions
+## Notes
 
 If clock time is unavailable, keep prior phase if present. Otherwise initialize to midday and mark uncertainty in `notes`.

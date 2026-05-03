@@ -1,6 +1,14 @@
 # AgentSociety2 社会人仿真技能仓库
 
+> Claude Skill style modules for simulating socially grounded human agents in AgentSociety2-style environments.
+
 这是一个**独立的技能库**，用于在 AgentSociety 风格环境中模拟“真实社会人”：有身体节律、有社会关系、有规范压力、有经济约束，也会遗忘与学习。
+
+Repository description:
+
+```text
+Theory-grounded Claude Skill style modules for social human simulation: cognition, memory, physiology, relationships, norms, institutions, media literacy, and planning.
+```
 
 ## 你能在这里得到什么
 
@@ -16,6 +24,8 @@
 - `AGENT.md` 与 workspace 机制：`docs/agent_context_design.md`
 - 研究与框架设计笔记：`docs/human_agent_research.md`、`docs/agent_framework_design_research.md`
 - 文档索引：`docs/index.md`
+- 贡献指南：`CONTRIBUTING.md`
+- 安全政策：`SECURITY.md`
 
 ## 本地预览静态说明站点（MkDocs）
 
@@ -23,6 +33,13 @@
 python -m pip install -r requirements-docs.txt
 python scripts/generate_skill_catalog.py
 python -m mkdocs serve
+```
+
+如果只需要验证静态构建：
+
+```bash
+python scripts/generate_skill_catalog.py
+python -m mkdocs build
 ```
 
 ## 当前技能（按目录）
@@ -71,10 +88,16 @@ python -m mkdocs serve
 2. `SKILL.md` frontmatter 默认只写 `name` + `description`；如确实需要脚本，再加 `script`。
 3. 技能输出写入 `state/*.json` 或 `state/*.jsonl`，并尽量提供 `_meta.purpose` 与 `_summary/summary`，方便 `AGENT.md` 自动索引与摘要。
 
+## 适用范围与安全边界
+
+这个仓库用于社会仿真、agent 行为建模和可审查技能复用。技能中的心理学、社会科学、健康、经济和制度模型都是仿真近似，不应用作医疗、法律、金融、公共政策或现实个人决策建议。
+
+贡献示例和测试数据不得包含真实个人敏感信息、密钥、token、私有位置轨迹、真实医疗记录或未获授权的对话记录。发现安全问题请按 `SECURITY.md` 报告，不要公开发 issue。
+
 ## 贡献
 
 请阅读 `CONTRIBUTING.md`。
 
 ## License
 
-MIT，见 `LICENSE`。
+代码、文档和技能说明默认按 MIT License 发布，见 `LICENSE`。第三方论文、书籍、资料和商标仍归原权利人所有；`references/` 中的引用只用于说明模型来源，不重新授权原文内容。
