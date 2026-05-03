@@ -10,8 +10,10 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/health/`
 - 说明文件 / Skill file: `skills/health/SKILL.md`
-- 最近更新 / Last updated: `2026-04-27`
-- 理论依据 / Research basis: no bundled reference file.
+- 执行脚本 / Script baseline: none; use the natural-language procedure.
+- 最近更新 / Last updated: `2026-05-03`
+- 理论依据 / Research basis:
+  - `skills/health/references/research_basis.md`
 
 ## SKILL.md（原文）
 
@@ -26,6 +28,12 @@ description: Track sickness, pain, chronic condition, recovery, exercise, stress
 ## Purpose
 
 Maintain health as a slow-moving background state that affects energy, mood, mobility, appetite, social behavior, and plan feasibility.
+
+## Internal Logic (One Sentence)
+
+Combine symptoms, prior health, physiology, stress, recovery, exercise, medication, and memory evidence to update acute and chronic health effects in `state/health.json`.
+
+Research basis: `references/research_basis.md`.
 
 ## Use When
 
@@ -71,3 +79,38 @@ Write `state/health.json`.
 
 Health should change slowly unless there is an acute event. Do not make every tired state an illness. Distinguish ordinary fatigue from sickness, pain, and chronic burden.
 ```
+
+## 理论依据 / Research Basis
+
+### `research_basis.md`
+
+# Health Research Basis
+
+## Model
+
+Biopsychosocial health with allostatic load and recovery dynamics.
+
+## Update Rule
+
+```text
+stress_burden_next = clamp(stress_burden + stressor_load - recovery, 0, 1)
+recovery_capacity = clamp(sleep_quality + rest + support + fitness - illness_load, 0, 1)
+overall_health = clamp(1 - weighted_sum(acute_symptoms, chronic_factors, stress_burden), 0, 1)
+```
+
+## Variables
+
+- `overall_health`: broad health signal, `[0, 1]`.
+- `acute_symptoms`: pain, illness, nausea, dizziness, fever, injury, each `[0, 1]`.
+- `chronic_factors`: fitness, chronic condition burden, stress burden, recovery capacity, each `[0, 1]`.
+- `behavior_effects`: mobility, appetite, social withdrawal, and perceived-control modifiers, usually `[-1, 1]`.
+
+## Defaults
+
+Health changes slowly unless observation or memory reports an acute event. Ordinary tiredness should usually stay in physiology rather than becoming illness.
+
+## Sources
+
+- Engel, G. L. (1977). The need for a new medical model.
+- McEwen, B. S. (1998). Protective and damaging effects of stress mediators.
+- WHO. (1948). Constitution of the World Health Organization.

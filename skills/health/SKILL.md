@@ -9,6 +9,12 @@ description: Track sickness, pain, chronic condition, recovery, exercise, stress
 
 Maintain health as a slow-moving background state that affects energy, mood, mobility, appetite, social behavior, and plan feasibility.
 
+## Internal Logic (One Sentence)
+
+Combine symptoms, prior health, physiology, stress, recovery, exercise, medication, and memory evidence to update acute and chronic health effects in `state/health.json`.
+
+Research basis: `references/research_basis.md`.
+
 ## Use When
 
 Use this skill when the agent is sick, injured, exhausted, exercising, recovering, taking medication, under chronic stress, or making health-related choices.

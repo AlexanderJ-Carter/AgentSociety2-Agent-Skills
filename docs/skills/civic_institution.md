@@ -10,6 +10,7 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/civic_institution/`
 - 说明文件 / Skill file: `skills/civic_institution/SKILL.md`
+- 执行脚本 / Script baseline: `scripts/update_civic_institution.py`
 - 最近更新 / Last updated: `2026-04-27`
 - 理论依据 / Research basis:
   - `skills/civic_institution/references/research_basis.md`

@@ -10,8 +10,10 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/observation/`
 - 说明文件 / Skill file: `skills/observation/SKILL.md`
-- 最近更新 / Last updated: `2026-04-27`
-- 理论依据 / Research basis: no bundled reference file.
+- 执行脚本 / Script baseline: none; use the natural-language procedure.
+- 最近更新 / Last updated: `2026-05-03`
+- 理论依据 / Research basis:
+  - `skills/observation/references/research_basis.md`
 
 ## SKILL.md（原文）
 
@@ -23,13 +25,21 @@ description: Fetch the current world observation for this tick.
 
 # Observation
 
+## Purpose
+
 You are a situated agent in a simulated world. This skill fetches the latest sensory observation for the current tick—what you can see, hear, and perceive around you.
 
-## When to Use
+## Internal Logic (One Sentence)
+
+Call the environment observation action for the current agent, then write natural-language perception to `state/observation.txt` and structured context to `state/observation_ctx.json` when available.
+
+Research basis: `references/research_basis.md`.
+
+## Use When
 
 Activate this skill when you need fresh perception for the current tick. Other skills **may** read `state/observation.txt` / `state/observation_ctx.json` if those files exist—there is no hard activation order.
 
-## Workflow
+## Procedure
 
 1. Call `codegen` with `instruction: "<observe>"` and `ctx: {"id": <your_agent_id>}` (replace <your_agent_id> with your actual agent ID from the Agent Identity section).
 2. Parse the response:
@@ -114,8 +124,47 @@ The `state/observation_ctx.json` typically contains:
 - The `ctx` JSON may be large; you don't need to memorize it all—write it to `state/observation_ctx.json` and let readers pull fields as needed.
 - If `codegen` returns an error, write a short note into `state/observation.txt` so later reads see what failed.
 
-## Notes on State
+## Write
+
+Write `state/observation.txt` and, when structured context exists, `state/observation_ctx.json`.
+
+## Notes
 
 This skill only produces **observation artifacts** (`state/observation.txt`, optional `state/observation_ctx.json`).
 Higher-level “agent state snapshot / replay logging” is considered **system functionality** rather than a human-like capability skill, and should be handled by the runtime/framework if needed.
 ```
+
+## 理论依据 / Research Basis
+
+### `research_basis.md`
+
+# Observation Research Basis
+
+## Model
+
+Situated cognition and perception-action coupling. The agent should reason from current perceptual grounding rather than only from static profile text.
+
+## Update Rule
+
+```text
+observation_state = environment.observe(agent_id)
+state/observation.txt = observation_state.stdout
+state/observation_ctx.json = observation_state.ctx when available
+```
+
+## Variables
+
+- `agent_id`: current simulated person.
+- `stdout`: natural-language observation.
+- `ctx`: structured world context such as location, time, nearby agents, nearby objects, and available actions.
+- `status`: environment processing status.
+
+## Defaults
+
+If observation is unavailable, preserve a concise error or uncertainty note so later skills know the state is stale.
+
+## Sources
+
+- Suchman, L. A. (1987). *Plans and Situated Actions*.
+- Hutchins, E. (1995). *Cognition in the Wild*.
+- Clark, A. (1997). *Being There*.

@@ -9,6 +9,12 @@ description: Synthesize memories into stable beliefs, preferences, self-concept,
 
 Convert repeated experiences into higher-level understanding. This skill lets the agent learn patterns about self, others, places, routines, culture, and consequences.
 
+## Internal Logic (One Sentence)
+
+Compress repeated memories, emotions, plans, relationship changes, and routine outcomes into concise reflections, then append `state/reflections.jsonl` and update beliefs, preferences, or self-concept when evidence is strong.
+
+Research basis: `references/research_basis.md`.
+
 ## Use When
 
 Use this skill periodically, after major events, after repeated similar memories, at the end of a day, or before long-horizon planning.

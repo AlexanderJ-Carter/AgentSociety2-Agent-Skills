@@ -31,6 +31,17 @@ description: One sentence shown in the skill catalog.
 
 `PersonAgent.SkillRegistry` 目前支持更多字段，比如 `requires`、`inputs`、`outputs`、`allowed_tools`、`script`、`executor`、`priority` 等。但这些都是框架扩展，不是本仓库的默认写法。除非某个技能必须依赖脚本或强约束工具，否则不要写。
 
+## Claude Skill 兼容说明
+
+Claude Skill 的公开形式强调三点：一个技能目录、一个入口 `SKILL.md`、以及最小 frontmatter。模型通常先只看到 `name` 和 `description`，因此 `description` 必须写清楚技能做什么、何时触发、为什么值得读取完整正文。
+
+本仓库尽量遵循这个风格，同时保留 AgentSociety2 运行时约束：
+
+- 官方 Claude Skill 示例常用 lowercase hyphen 命名；本仓库继续使用 lowercase `snake_case`，因为目录名、状态文件和 PersonAgent 技能注册已经围绕这个形式集成。
+- `SKILL.md` 正文写可执行流程，不写长论文；理论依据放进 `references/`。
+- 确定性计算放进 `scripts/`，并且只在 frontmatter 写必要的 `script` 字段。
+- 触发说明要面向模型，而不是面向人类读者的营销文案。
+
 ## 正文结构
 
 正文写成“激活后怎么做”，不要写成论文式设计文档。推荐结构：

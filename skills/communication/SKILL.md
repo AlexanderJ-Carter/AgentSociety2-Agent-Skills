@@ -9,6 +9,10 @@ description: Model conversation intent, speech style, turn-taking, listening, re
 
 Maintain how the agent communicates with others: what it wants to say, how direct it is, whether it listens, how it repairs misunderstandings, and what nonverbal signals matter.
 
+## Internal Logic (One Sentence)
+
+Use participants, relationship, culture, norms, emotion, and conversational context to select communicative intent, style, turn state, and repair strategy, then write `state/communication.json`.
+
 ## Use When
 
 Use this skill around conversations, requests, refusals, apologies, negotiation, gossip, teaching, conflict, small talk, or public speaking.

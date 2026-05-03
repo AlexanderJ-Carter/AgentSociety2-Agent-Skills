@@ -10,7 +10,8 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/physiology/`
 - 说明文件 / Skill file: `skills/physiology/SKILL.md`
-- 最近更新 / Last updated: `2026-04-27`
+- 执行脚本 / Script baseline: `scripts/update_physiology.py`
+- 最近更新 / Last updated: `2026-05-03`
 - 理论依据 / Research basis:
   - `skills/physiology/references/research_basis.md`
 
@@ -29,9 +30,13 @@ script: scripts/update_physiology.py
 
 Maintain the agent's body state for this tick. This skill turns time, activity, meals, sleep, illness, stress, and environment into physiological pressures that `cognition` and `plan` can use.
 
+## Internal Logic (One Sentence)
+
+Use prior body state, time, circadian signals, meals, drinking, sleep, activity, stress, illness, and environment to update body pressures in `state/physiology.json` and need urgency in `state/needs.json`.
+
 Research basis: `references/research_basis.md`.
 
-## When to Use
+## Use When
 
 Use this skill once per tick before `cognition` when bodily needs may affect intention selection or plan interruption.
 
@@ -146,7 +151,7 @@ Stress load rises under threat, overload, conflict, uncertainty, and unmet needs
 - `plan` should interrupt ongoing plans when `interrupt_plan` is true.
 - `circadian` should provide `circadian_appetite` and alertness if available.
 
-## Stop Conditions
+## Notes
 
 If no bodily state can be inferred, initialize neutral physiology and write a short note explaining the uncertainty.
 ```

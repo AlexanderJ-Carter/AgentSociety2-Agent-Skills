@@ -9,6 +9,12 @@ description: Track social norms, roles, obligations, permissions, sanctions, and
 
 Model the agent as someone living under social rules. Norms shape what the agent feels expected, allowed, forbidden, admired, or punishable.
 
+## Internal Logic (One Sentence)
+
+Use place, role, audience, culture, relationship, routine, and observation context to estimate active norms, permissions, sanctions, visibility, and moral emotion risk in `state/norms.json`.
+
+Research basis: `references/research_basis.md`.
+
 ## Use When
 
 Use this skill in workplaces, schools, homes, public spaces, queues, restaurants, hospitals, religious places, legal settings, or any situation involving role expectations.

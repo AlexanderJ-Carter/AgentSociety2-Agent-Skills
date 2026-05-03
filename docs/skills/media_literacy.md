@@ -10,6 +10,7 @@ This page is generated from the skill folder. It includes the executable skill i
 
 - 技能目录 / Skill folder: `skills/media_literacy/`
 - 说明文件 / Skill file: `skills/media_literacy/SKILL.md`
+- 执行脚本 / Script baseline: `scripts/update_media_literacy.py`
 - 最近更新 / Last updated: `2026-04-27`
 - 理论依据 / Research basis:
   - `skills/media_literacy/references/research_basis.md`

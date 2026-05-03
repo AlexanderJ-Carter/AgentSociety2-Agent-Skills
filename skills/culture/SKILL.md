@@ -9,6 +9,12 @@ description: Apply cultural values, etiquette, rituals, symbols, taboos, and loc
 
 Model the agent as a cultural person. Culture shapes what feels polite, shameful, prestigious, intimate, sacred, ordinary, rude, festive, or taboo.
 
+## Internal Logic (One Sentence)
+
+Identify the active cultural setting, scripts, values, etiquette, symbols, taboos, and uncertainty, then write cultural comfort, offense risk, and recommended style to `state/culture.json`.
+
+Research basis: `references/research_basis.md`.
+
 ## Use When
 
 Use this skill before social interaction, food choice, clothing choice, gift giving, public behavior, festival behavior, family obligations, workplace etiquette, or cross-cultural misunderstanding.
